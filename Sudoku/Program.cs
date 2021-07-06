@@ -1,6 +1,13 @@
-﻿using Sudoku.BaseGame.classes;
+﻿using AngleSharp;
+using AngleSharp.Io;
+using Sudoku.BaseGame.classes;
+using Sudoku.WebLoader;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Sudoku
 {
@@ -8,19 +15,16 @@ namespace Sudoku
     {
         static void Main(string[] args)
         {
-            Board board = new Board();
+            var req = new SudokuRequester();
+            Board board = new Board(req.getSudoku(1).Result);
+            Solver solver = new Solver();
             board.printBoard();
 
-            board.insertValue(0, 0, 9);
-            board.printBoard();
-            foreach (List<Cell> row in board.getColumns())
-            {
-                foreach (Cell cell in row)
-                {
-                    Console.Write(cell.getValue() + " ");
-                }
-                Console.WriteLine();
-            }
+            DateTime start = DateTime.Now;
+            Board solution = solver.solveSudoku(board, 0);
+            Console.WriteLine("Recursive calls: " + solver.getReqCounter());
+            Console.WriteLine("Time: " + (DateTime.Now - start).TotalSeconds + "\n\n");
+            solution.printBoard();
         }
     }
 }
