@@ -32,7 +32,7 @@ namespace Sudoku.BaseGame.classes
                 for (int j = 0; j < ArraySize; j++)
                 {
                     int val = int.Parse(encodedGame.ElementAt(i * 9 + j).ToString());
-                    this.cells[i, j] = new Cell(val, i, j);
+                    this.cells[i, j] = new Cell(val, i, j, true);
                 }
             }
         }
@@ -99,7 +99,7 @@ namespace Sudoku.BaseGame.classes
             this.cells = new Cell[ArraySize, ArraySize];
             foreach (Cell cell in duplicate.getCells())
             {
-                this.cells[cell.getRow(), cell.getColumn()] = new Cell(cell.getValue(), cell.getRow(), cell.getColumn());
+                this.cells[cell.getRow(), cell.getColumn()] = new Cell(cell.getValue(), cell.getRow(), cell.getColumn(), cell.getIsBase());
             }
         }
 
@@ -220,11 +220,18 @@ namespace Sudoku.BaseGame.classes
                 Console.Write("\t| ");
                 for (int j = 0; j < ArraySize; j++)
                 {
-                    int value = this.cells[i, j].getValue();
-                    if (value != Cell.EmptyVal)
-                        Console.ForegroundColor = ConsoleColor.Red;
+                    Cell cell = this.cells[i, j];
+                    if (cell.getValue() != Cell.EmptyVal)
+                    {
+                        if (cell.getIsBase())
+                            Console.ForegroundColor = ConsoleColor.Green;
+                        else
+                            Console.ForegroundColor = ConsoleColor.Red;
+                    }
                     else
+                    {
                         Console.ResetColor();
+                    }
                     Console.Write(this.cells[i, j].getValue());
                     Console.ResetColor();
                     Console.Write(((j + 1) % 3 == 0 ? " | " : " "));

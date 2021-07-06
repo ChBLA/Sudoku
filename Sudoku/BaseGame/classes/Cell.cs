@@ -9,6 +9,7 @@ namespace Sudoku.BaseGame.classes
         private int value;
         private int row;
         private int column;
+        private bool isBase = false;
         public static int EmptyVal = 0;
 
         public Cell(int value, int row, int column)
@@ -18,9 +19,22 @@ namespace Sudoku.BaseGame.classes
             this.column = column;
         }
 
+        public Cell(int value, int row, int column, bool isBase)
+        {
+            this.value = value;
+            this.row = row;
+            this.column = column;
+            this.isBase = isBase;
+        }
+
         public int getValue()
         {
             return this.value;
+        }
+
+        public bool getIsBase()
+        {
+            return isBase;
         }
 
         public bool isDecided()
